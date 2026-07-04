@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .forms import RegistrationForm
+from .models import Task
+
 # Create your views here.
 
 
@@ -26,3 +27,8 @@ def register(request):
     
   
     return render(request, 'crm/registration.html')
+def task(request):
+    SingleTask = Task.objects.get(pk=2)
+    context = {'SingleTask': SingleTask}
+  
+    return render(request,'crm/task.html', context )
