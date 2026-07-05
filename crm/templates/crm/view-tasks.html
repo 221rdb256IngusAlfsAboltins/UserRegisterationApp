@@ -1,16 +1,53 @@
 
 {% extends 'crm/base.html' %}
-<html>
+ {% load static %}
+
+
     
+
     {%block content%}
+    
+    <link rel="stylesheet" href="{% static 'crm/css/tasks.css' %}">
         {% for Task in Tasks %}
+        {{Task.id}}
+        <br>
         {{Task.title}}
         <br>
         {{Task.description}}
         <br>
         {{Task.created}}
-         <hr>
-         {% endfor %}
+        <a href="{% url 'update-task' Task.id %}">Update</a>
+        <br>
+        <hr>
+         <button onclick="openModal( {{ Task.id }} )">
+         Delete
+        </button>
+         
+       
+        <div id="modal-{{ Task.id }}" class="modal hidden">
+                <div class="modal-box">
+                    <p>Are you sure you want to delete this task?</p>
+
+                    <form method="POST" action="{% url 'delete-task' Task.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Yes, delete</button>
+                    </form>
+
+                    <button onclick="closeModal({{ Task.id }})">Cancel</button>
+                </div>
+        </div>
+            <hr>
+          {% endfor %}
+          
+           <script>
+
+            function openModal(id) {
+                document.getElementById("modal-" + id).classList.remove("hidden");
+            }
+
+            function closeModal(id) {
+                document.getElementById("modal-" + id).classList.add("hidden");
+            }
+            </script>
+        
     {% endblock %}
-</body>
-</html>
