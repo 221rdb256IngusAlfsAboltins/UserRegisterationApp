@@ -1,6 +1,11 @@
 <html>
-
- <h1>Website under development</h1>
+    <h1>Task app</h1>
+    <a href="{% url 'create-task' %}">create task</a>
+    <a href="{% url 'view-tasks' %}">view tasks</a>
+    <a href="{% url 'registration' %}">registration</a>
+    <a href="{% url '' %}">ome</a>
+    <br>
+    <hr>
 
  {% block content %}
  {% endblock %}

@@ -1,34 +1,31 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import Task
-
-# Create your views here.
+from django.core.mail import send_mail
+from .forms import TaskForm
 
 
 def homepage(request):
 
     
-    clientlist =[
-    {
-        "id":1,
-        "name":'Jhon doe',
-        "occupation":"elextical"
-        
-    }, {
-        "id": 2,
-        "name": 'Jhon doe',
-        "occupation": "elextical"
-
-    }]
-    context = {'clientlist': clientlist}
-    return render(request, 'crm/index.html',context)
+    return render(request, 'crm/index.html')
 
 def register(request):
-    
   
     return render(request, 'crm/registration.html')
-def task(request):
-    SingleTask = Task.objects.get(pk=2)
-    context = {'SingleTask': SingleTask}
+def tasks(request):
+    Tasks = Task.objects.all()
+    context = {'Tasks': Tasks}
   
-    return render(request,'crm/task.html', context )
+    return render(request,'crm/view-tasks.html', context )
+
+def create_task(request):
+    if request.method == "POST":
+        form= TaskForm(request.POST)
+        if form.is_valid()  :
+            form.save()
+            return redirect('view-tasks')
+    else:
+        form = TaskForm()
+        context = {'TaskForm':form}
+    return render(request, 'crm/create-task.html', context )

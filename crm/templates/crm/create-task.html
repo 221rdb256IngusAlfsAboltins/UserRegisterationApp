@@ -8,7 +8,12 @@
 </head>
 <body>
     {% block content %}
-    registration
+    create task
+    <form method="POST" autocomplete="off" >
+        {% csrf_token %}
+        {{TaskForm.as_p}}
+        <input type="submit" value="Submit">
+    </form>
     {% endblock %}
 </body>
 </html>
