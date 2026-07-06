@@ -11,6 +11,8 @@ from django.http import HttpResponseForbidden
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate,login,logout
 
+from django.contrib.auth.decorators import login_required
+
 def homepage(request):
 
     
@@ -47,26 +49,30 @@ def my_login(request):
         form = LogInForm()
         context = {'LogInForm': form}
         return render(request, 'crm/my-login.html', context)
+
+
+@login_required(login_url='my-login')
 def user_logout(request):
-    
-   pass
-    
-
-
-
+    if request.method == "POST":
+        logout(request)
+        return redirect('my-login')
+    else:
+        return HttpResponseForbidden("Access denied")
+   
+@login_required(login_url='my-login')
 def dashboard(request):
     return render(request, 'crm/dashboard.html')
   
   
-  
-  
-    
+@login_required(login_url='my-login')
 def tasks(request):
     Tasks = Task.objects.all()
     context = {'Tasks': Tasks}
   
     return render(request,'crm/view-tasks.html', context )
 
+
+@login_required(login_url='my-login')
 def create_task(request):
     if request.method == "POST":
         form= TaskForm(request.POST)
@@ -79,6 +85,7 @@ def create_task(request):
         return render(request, 'crm/create-task.html', context )
     
 
+@login_required(login_url='my-login')
 def update_task(request, id):
     task = Task.objects.get(id=id)
     if request.method == "POST":
@@ -91,6 +98,8 @@ def update_task(request, id):
         context = {'TaskForm': form}
         return render(request, 'crm/update-task.html', context)
 
+
+@login_required(login_url='my-login')
 def delete_task(request,id):
     task = get_object_or_404(Task, id=id)
     if request.method == "POST":
