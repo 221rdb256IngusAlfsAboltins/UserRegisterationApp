@@ -3,7 +3,7 @@
 create task
 <form method="POST" autocomplete="off" >
     {% csrf_token %}
-    {{CreateUserForm.as_p}}
-    <input type="submit" value="Create Account">
+    {{LogInForm.as_p}}
+    <input type="submit" value="Login">
 </form>
 {% endblock %}
